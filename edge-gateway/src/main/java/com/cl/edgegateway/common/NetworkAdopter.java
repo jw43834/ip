@@ -1,5 +1,7 @@
 package com.cl.edgegateway.common;
 
+import java.io.IOException;
+
 //@Table(name="adopters")
 //@Entity
 public abstract class NetworkAdopter {
@@ -9,7 +11,7 @@ public abstract class NetworkAdopter {
         this.networkAdopterInfo = networkAdopterInfo;
     }
 
-    abstract public void initialize();
+    abstract public void initialize() throws IOException;
 
     abstract public void send();
 
