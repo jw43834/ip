@@ -4,23 +4,27 @@ import com.cl.edgegateway.adopter.tcp.TCPAdopter;
 import com.cl.edgegateway.common.NetworkAdopter;
 import com.cl.edgegateway.common.NetworkAdopterInfo;
 import com.cl.edgegateway.common.NetworkAdopterType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
+@Slf4j
 @Component
 public class InboundManager {
     private ArrayList<NetworkAdopter> inboundAdopterList;
 
     @PostConstruct
     public void initialize() {
+        log.debug("Inbound Manager Initialize");
+
         inboundAdopterList = new ArrayList<NetworkAdopter>();
         // TODO : DB에서 어댑터 설정정보 조회 -> 어댑터 초기화
         ArrayList<NetworkAdopterInfo> genAdopterList = new ArrayList<NetworkAdopterInfo>();
         NetworkAdopterInfo tcpAdopterInfo = NetworkAdopterInfo.builder()
                 .adopterId("tcp1")
-                .adopterName("tcp1")
+                .adopterName("localhost")
                 .networkAdopterType(NetworkAdopterType.TCP)
                 .connectionLimit(100)
                 .connectionTimeout(1000)

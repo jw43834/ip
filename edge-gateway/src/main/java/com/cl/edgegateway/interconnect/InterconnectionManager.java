@@ -24,7 +24,7 @@ public class InterconnectionManager implements NetworkManager {
     @Override
     public void initialize() {
         outboundQueue = new LinkedBlockingQueue<Object>();
-        log.debug("Initialize");
+        log.debug("Interconnection Manager Initialize");
         // TODO : outboundManager 생성 후 큐 인젝션
         outboundManager.setOutboundQueue(outboundQueue);
 

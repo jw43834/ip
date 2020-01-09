@@ -20,11 +20,12 @@ public class TCPAdopter extends NetworkAdopter {
 
     public TCPAdopter(NetworkAdopterInfo networkAdopterInfo) {
         super(networkAdopterInfo);
+        initialize();
     }
 
-    @PostConstruct
     @Override
     public void initialize() {
+        log.debug("TCP Adopter Initialize");
         // Connection Limit
         executorService = Executors.newFixedThreadPool(networkAdopterInfo.getConnectionLimit());
 

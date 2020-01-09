@@ -23,6 +23,7 @@ public class TCPCallable implements Callable<String> {
     }
 
     public void initialize() {
+        log.debug("Inbound TCP Adopter Initialize");
         try {
             inputStream = socket.getInputStream();
             //bufferedReader = new BufferedReader(inputStream);
@@ -37,6 +38,8 @@ public class TCPCallable implements Callable<String> {
         // TODO : Input에 대한 스키마 정의 필요. 크기많큼 데이터 Read
         byte[] byteArr = new byte[100];
         int readByteCount = inputStream.read(byteArr);
+
+        log.debug("readByteCount : {}",readByteCount);
 
         // 수신된 데이터 내부 유통 객체로 변환
         //String data = new String(byteArr, 0, readByteCount, "UTF-8");
