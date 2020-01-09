@@ -4,19 +4,27 @@ import com.cl.edgegateway.common.NetworkManager;
 import com.cl.edgegateway.inbound.InboundManager;
 import com.cl.edgegateway.outbound.OutboundManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Slf4j
+@Service
 @RequiredArgsConstructor
 public class InterconnectionManager implements NetworkManager {
-    private InboundManager inboundManager;
+    private final InboundManager inboundManager;
 
-    private OutboundManager outboundManager;
+    private final OutboundManager outboundManager;
 
-    private LinkedBlockingQueue<Object> outboundQueue = new LinkedBlockingQueue<Object>();
+    private LinkedBlockingQueue<Object> outboundQueue;
 
+    @PostConstruct
     @Override
     public void initialize() {
+        outboundQueue = new LinkedBlockingQueue<Object>();
+        log.debug("Initialize");
         // TODO : outboundManager 생성 후 큐 인젝션
         outboundManager.setOutboundQueue(outboundQueue);
 

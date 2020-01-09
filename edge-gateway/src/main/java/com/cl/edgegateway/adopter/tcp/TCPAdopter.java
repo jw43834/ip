@@ -1,15 +1,14 @@
-package com.cl.edgegateway.common;
+package com.cl.edgegateway.adopter.tcp;
 
+import com.cl.edgegateway.common.NetworkAdopter;
+import com.cl.edgegateway.common.NetworkAdopterInfo;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,13 +16,15 @@ import java.util.concurrent.Executors;
 public class TCPAdopter extends NetworkAdopter {
     private ExecutorService executorService;
     private ServerSocket serverSocket;
+    private static int threadId = 1;
 
     public TCPAdopter(NetworkAdopterInfo networkAdopterInfo) {
         super(networkAdopterInfo);
     }
 
+    @PostConstruct
     @Override
-    public void initialize() throws IOException {
+    public void initialize() {
         // Connection Limit
         executorService = Executors.newFixedThreadPool(networkAdopterInfo.getConnectionLimit());
 
@@ -32,7 +33,11 @@ public class TCPAdopter extends NetworkAdopter {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(networkAdopterInfo.getAdopterName(), networkAdopterInfo.getPort()));
         } catch (Exception e) {
-            serverSocket.close();
+            try {
+                serverSocket.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
 //            if (!serverSocket.isClosed()) {
 //                log.error("ERROR: Can't bind Host Address..! Check it now..");
@@ -44,13 +49,17 @@ public class TCPAdopter extends NetworkAdopter {
         log.debug("Waiting Connection on port" + "[" + networkAdopterInfo.getPort() + "]");
 
         while (true) {
-            Socket socket = serverSocket.accept();
+            Socket socket = null;
+            try {
+                socket = serverSocket.accept();
 
-//            ChatThread chatThread = new ChatThread(sock, hm);
-//            chatThread.start();
-
-            executorService.submit(new TCPCallable("ThreadID",socket));
-
+                // TODO : 소켓 연결 후 패킷데이터 읽어 장치 인증. 인증된 장치만 쓰레드 생성
+                // 인증 실패시 socket close
+                executorService.submit(new TCPCallable("Thread_Id_" + Integer.toString(threadId++), socket));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //
 
             // 커넥션이 맺어질때마다 각 Session Thread를 생성한다.
             // 해당 쓰레드는 새로 클래스를 생성하여.. 핸드쉐이킹 및 매인 함수를 만들자.
@@ -60,6 +69,7 @@ public class TCPAdopter extends NetworkAdopter {
                 // 자바에서는 어떻게 짜야하나 고민중..
 
                 // 너무 C++ 스럽게 짜놨다... 어케 해야하나 ㅋㅋ
+
 
             } catch (Exception e) {
                 log.debug("TCPAdopter>> Exception" + "[" + e.getMessage() + "]");
