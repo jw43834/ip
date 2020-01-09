@@ -16,6 +16,8 @@ public class TCPCallable implements Callable<String> {
     public TCPCallable(String threadName, Socket socket) {
         this.threadName = threadName;
         this.socket = socket;
+
+        initialize();
     }
 
     public TCPCallable() {
@@ -40,6 +42,8 @@ public class TCPCallable implements Callable<String> {
         int readByteCount = inputStream.read(byteArr);
 
         log.debug("readByteCount : {}",readByteCount);
+
+        sendmsg("aaaaaaaa");
 
         // 수신된 데이터 내부 유통 객체로 변환
         //String data = new String(byteArr, 0, readByteCount, "UTF-8");
@@ -72,7 +76,8 @@ public class TCPCallable implements Callable<String> {
         return null;
     }
 
-    public void sendmsg(String sendDataString) throws UnsupportedEncodingException {
+    public void sendmsg(String sendDataString) {
+        log.debug("send message : "+sendDataString);
         try {
             byte[] byteArr = sendDataString.getBytes("UTF-8");
             OutputStream os = socket.getOutputStream();
