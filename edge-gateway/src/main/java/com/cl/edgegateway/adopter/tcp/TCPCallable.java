@@ -1,11 +1,16 @@
 package com.cl.edgegateway.adopter.tcp;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
+@NoArgsConstructor
 @Slf4j
 public class TCPCallable implements Callable<String> {
     private String threadName;
@@ -18,10 +23,6 @@ public class TCPCallable implements Callable<String> {
         this.socket = socket;
 
         initialize();
-    }
-
-    public TCPCallable() {
-
     }
 
     public void initialize() {

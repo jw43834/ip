@@ -1,3 +1,4 @@
 /.idea/
 *.iml
 /edge-gateway/edge-gateway.iml
+/target/
