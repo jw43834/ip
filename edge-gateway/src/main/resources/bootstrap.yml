@@ -3,3 +3,13 @@ spring:
     name: edge-gateway
   main:
     allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:h2:mem:user
+    driver-class-name: org.h2.Driver
+    jpa:
+      show-sql: true
+
+server:
+  port: 5000
+  servlet:
+    context-path: /uaa
