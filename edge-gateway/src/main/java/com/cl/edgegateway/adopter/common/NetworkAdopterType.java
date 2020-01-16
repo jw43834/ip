@@ -1,4 +1,4 @@
-package com.cl.edgegateway.common;
+package com.cl.edgegateway.adopter.common;
 
 public enum NetworkAdopterType {
     MODBUS_TCP("modbus_tcp"),

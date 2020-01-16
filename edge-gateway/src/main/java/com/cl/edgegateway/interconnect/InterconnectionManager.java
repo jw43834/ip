@@ -1,6 +1,6 @@
 package com.cl.edgegateway.interconnect;
 
-import com.cl.edgegateway.common.NetworkManager;
+import com.cl.edgegateway.adopter.common.NetworkManager;
 import com.cl.edgegateway.inbound.InboundManager;
 import com.cl.edgegateway.outbound.OutboundManager;
 import lombok.RequiredArgsConstructor;

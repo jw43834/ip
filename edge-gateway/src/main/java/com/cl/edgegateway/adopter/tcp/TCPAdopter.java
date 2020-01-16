@@ -1,22 +1,22 @@
 package com.cl.edgegateway.adopter.tcp;
 
-import com.cl.edgegateway.common.NetworkAdopter;
-import com.cl.edgegateway.common.NetworkAdopterInfo;
+import com.cl.edgegateway.adopter.common.NetworkAdopter;
+import com.cl.edgegateway.adopter.common.NetworkAdopterInfo;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
 public class TCPAdopter extends NetworkAdopter {
-    private ExecutorService executorService;
+    private ExecutorService tcpHandlerThreadPool;
+
+    private final static int handlerCount = 1;
+
     private ServerSocket serverSocket;
-    private static int threadId = 1;
 
     public TCPAdopter(NetworkAdopterInfo networkAdopterInfo) {
         super(networkAdopterInfo);
@@ -25,9 +25,9 @@ public class TCPAdopter extends NetworkAdopter {
 
     @Override
     public void initialize() {
+        tcpHandlerThreadPool = Executors.newFixedThreadPool(handlerCount);
+
         log.debug("TCP Adopter Initialize");
-        // Connection Limit
-        executorService = Executors.newFixedThreadPool(networkAdopterInfo.getConnectionLimit());
 
         try {
             // Init TCP Socket
@@ -40,33 +40,12 @@ public class TCPAdopter extends NetworkAdopter {
                 ex.printStackTrace();
             }
             e.printStackTrace();
-//            if (!serverSocket.isClosed()) {
-//                log.error("ERROR: Can't bind Host Address..! Check it now..");
-//                stopAdopter();
-//            }
         }
 
-        // Wait Connection
-        log.debug("Waiting Connection on port" + "[" + networkAdopterInfo.getPort() + "]");
+        TCPHandler tcpHandler = new TCPHandler(networkAdopterInfo, serverSocket);
+        tcpHandler.initialize();
 
-        while (true) {
-            Socket socket = null;
-            try {
-                socket = serverSocket.accept();
-
-                executorService.submit(new TCPCallable("Thread_Id_" + Integer.toString(threadId++), socket));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-
-            } catch (Exception e) {
-                log.debug("TCPAdopter>> Exception" + "[" + e.getMessage() + "]");
-                log.debug("TCPAdopter>> ERROR : Failed to Create Each Session..!");
-                stopAdopter();
-            }
-        }
+        tcpHandlerThreadPool.submit(tcpHandler);
     }
 
     public void stopAdopter() {

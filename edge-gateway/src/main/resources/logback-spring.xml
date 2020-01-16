@@ -3,17 +3,11 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <jmxConfigurator/>
 
-    <!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
-    <!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
-    <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %p %M\(%L\) : %m%n</pattern>-->
-    <!--        </layout>-->
-    <!--    </appender>-->
-
-    <!--    <logger name="com.cl.edgegateway" level="DEBUG">-->
-    <!--        <appender-ref ref="STDOUT" />-->
-    <!--    </logger>-->
-
     <logger name="com.cl.edgegateway" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 
     <!--    <springProfile name="local">-->
     <!--        <root level="DEBUG">-->

@@ -6,14 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
+@ToString
 @Getter
 @Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="device")
-public class Device {
+public class Device implements Serializable {
     @Id
     @Column(name="device_id")
     private String deviceId;

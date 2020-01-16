@@ -1,9 +1,9 @@
 package com.cl.edgegateway.inbound;
 
 import com.cl.edgegateway.adopter.tcp.TCPAdopter;
-import com.cl.edgegateway.common.NetworkAdopter;
-import com.cl.edgegateway.common.NetworkAdopterInfo;
-import com.cl.edgegateway.common.NetworkAdopterType;
+import com.cl.edgegateway.adopter.common.NetworkAdopter;
+import com.cl.edgegateway.adopter.common.NetworkAdopterInfo;
+import com.cl.edgegateway.adopter.common.NetworkAdopterType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

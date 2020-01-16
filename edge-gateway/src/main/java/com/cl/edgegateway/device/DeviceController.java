@@ -1,6 +1,7 @@
 package com.cl.edgegateway.device;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/device")
@@ -18,11 +20,14 @@ public class DeviceController {
 
     @GetMapping
     public Page<Device> getDevices(Pageable pageable) {
-        return deviceService.findAll(pageable);
+        Page<Device> devices = deviceService.findAll(pageable);
+
+        return devices;
     }
 
     @GetMapping("/{deviceId}")
     public ResponseEntity getDevice(@PathVariable String deviceId) {
+
         Optional<Device> device = deviceService.findById(deviceId);
         return ResponseEntity.ok(device);
     }

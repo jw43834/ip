@@ -6,10 +6,14 @@ spring:
   datasource:
     url: jdbc:h2:mem:user
     driver-class-name: org.h2.Driver
-    jpa:
-      show-sql: true
+    initialize: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql : true
+      hibernate.use_sql_comments : true
 
 server:
-  port: 5000
+  port: 8080
   servlet:
-    context-path: /uaa
+    context-path: /edge
