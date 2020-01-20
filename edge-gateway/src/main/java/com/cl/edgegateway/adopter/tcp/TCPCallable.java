@@ -62,7 +62,7 @@ public class TCPCallable implements Callable<String> {
         }
         log.debug("received data : {}",device);
 
-        // Device 정보 조회
+        // TODO : Device 정보 조회 캐쉬 처리
         Device searchDevice = deviceService.findById(device.getDeviceId()).get();
 
         if(searchDevice == null)
@@ -81,8 +81,9 @@ public class TCPCallable implements Callable<String> {
             log.debug("readByteCount : {}",readByteCount);
 
             CollectionData collectionData = (CollectionData) SerializationUtils.deserialize(byteArr);
+            log.debug("Read Data : {}",collectionData);
 
-                // TODO : 큐나 전처리기 등으로 데이터 전달
+            // TODO : 큐나 전처리기 등으로 데이터 전달
         }
 
         //String data = new String(byteArr, 0, readByteCount, "UTF-8");

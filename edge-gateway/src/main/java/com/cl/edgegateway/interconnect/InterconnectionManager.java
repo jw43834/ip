@@ -32,7 +32,8 @@ public class InterconnectionManager implements NetworkManager {
         //queue.take();     // get
     }
 
-    // TODO : Inbound->Outbound Queue 데이터 전달. 구조 고민 필요...
+    // TODO : Inbound Manager 1) Pre Processing -> 2) Routing(각 Outbound Adopter enqueue)
+    // TODO : Throughput 조절(큐 사이즈)
     // Inbound에서 전달받은 메시지를 Interconnection에서 큐처리 하고 Adopter를 결정해서 보내는 식
     // Outbound로 보낼 대상 데이터, 설정정보 등이 있어야 함
     // 각각의 OutboundAdopter에도 큐를 넣을지는 고민...

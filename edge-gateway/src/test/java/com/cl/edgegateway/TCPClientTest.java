@@ -38,7 +38,7 @@ public class TCPClientTest {
             Device device = Device.builder()
                     .deviceId("device1")
                     .deviceName("device1")
-                    .deviceSequence(1)
+                    .deviceSequence(1L)
                     .password("11111111")
                     .build();
             log.debug("Send To Server : {}",device);

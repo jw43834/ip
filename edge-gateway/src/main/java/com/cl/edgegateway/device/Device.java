@@ -14,15 +14,18 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="device")
+@Table(name = "device")
 public class Device implements Serializable {
     @Id
-    @Column(name="device_id")
+    @Column(name = "device_id")
     private String deviceId;
-    @Column(name="device_sequence")
-    private int deviceSequence;
-    @Column(name="device_name")
+
+    @Column(name = "device_sequence")
+    private Long deviceSequence;
+
+    @Column(name = "device_name")
     private String deviceName;
-    @Column(name="password")
+
+    @Column(name = "password")
     private String password;
 }
