@@ -71,6 +71,12 @@ public class TCPCallable implements Callable<String> {
             log.debug("인증 실패");
             socket.close();
             // TODO : 쓰레드 삭제
+            // 2020.01.21 - 고민할 사항
+            // 1. 소켓을 바로 끊어버릴것인가 사용자에게 인지 후 끊을것인가 (미등록장치, 인증실패 등등)
+            // 2. 인지시킨다면, 오류메세지를 보낼텐데.. 헤더에 Reject에 대한 응답을 실어줘야한다. (ex: msgcode = 9999)
+            // -> 클라이언트는 종료시점에 굳이 데이터패킷까지 볼 필요없다. 헤더로 충분.
+            // -> 상세 네트워크 헤더 메시지코드 등의 정의 필요 (추후 보완한다면)
+            //   -> 헤더의 length 체크, 첫데이터가 헤더인지 데이터인지 체크 등등 (추후 보완한다면)
             return threadName;
         } else
             log.debug("Device Id({}) Connected",device.getDeviceId());
@@ -84,6 +90,8 @@ public class TCPCallable implements Callable<String> {
             log.debug("Read Data : {}",collectionData);
 
             // TODO : 큐나 전처리기 등으로 데이터 전달
+            // 2020.01.21 - 전처리기 / 큐가 할 역할을 기입부탁드림. 기억이 안남.
+            // 어돕터 별로 전처리기가 있던가 큐가 있던가?
         }
 
         //String data = new String(byteArr, 0, readByteCount, "UTF-8");
