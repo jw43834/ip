@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:h2:mem:user
     driver-class-name: org.h2.Driver
-    initialize: true
+    initialize: false
   jpa:
     show-sql: true
     properties:
