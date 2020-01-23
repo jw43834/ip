@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @NoArgsConstructor
@@ -90,17 +91,17 @@ public class TCPCallable implements Callable<String> {
                 log.debug("received data : {}", device);
 
                 // TODO : Caching Device Info
-                // TODO : Null handling
-                Device searchDevice = deviceService.findById(device.getDeviceId()).get();
+                Optional<Device> optionalDevice = Optional.ofNullable(deviceService.findById(device.getDeviceId())).orElse(null);
 
-                if (searchDevice == null)
+                if (!optionalDevice.isPresent()) {
                     log.debug("Unregistered device");
-                else if (!device.getPassword().equals(searchDevice.getPassword())) {
+                    return threadName;
+                }else if (!device.getPassword().equals(optionalDevice.get().getPassword())) {
                     log.debug("Fail device auth");
                     socket.close();
                     return threadName;
-                } else
-                    log.debug("Device Id({}) Connected", device.getDeviceId());
+                }
+                log.debug("Device Id({}) Connected", device.getDeviceId());
             }
         } catch (Exception e) {
             e.printStackTrace();
