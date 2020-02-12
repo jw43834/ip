@@ -1,0 +1,49 @@
+description = ""
+
+buildscript { // 그레이들 바이너리 플러그인 의존성 정의
+    ext {
+        springBootVersion = '2.1.6.RELEASE'
+        gradleGitPropertiesVersion = '1.4.17'
+    }
+    repositories {
+        mavenCentral() // 메이븐 중앙저장소
+        maven { url "https://plugins.gradle.org/m2" } // 그레이들 플러그인 저장소
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") // 스프링 부트 그레이들 플러그인 정의
+        classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gradleGitPropertiesVersion}")       // 깃정보속성 추출 플러그인 정의
+    }
+}
+
+subprojects {
+    group = 'com.cl'
+    version = '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management' // 스프링 부트 의존성 관리 플러그인: https://github.com/spring-gradle-plugins/dependency-management-plugin
+    apply plugin: 'com.gorylenko.gradle-git-properties' // https://plugins.gradle.org/plugin/com.gorylenko.gradle-git-properties
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = 'http://repo.maven.apache.org/maven2'
+        }
+        jcenter()
+    }
+
+    dependencies {
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.6.RELEASE'
+        implementation 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+
+    sourceCompatibility = '1.8'
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+}
